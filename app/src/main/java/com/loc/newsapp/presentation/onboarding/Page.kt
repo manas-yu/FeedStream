@@ -12,16 +12,13 @@ data class Page(
 
 val pages = listOf<Page>(
     Page(
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Bibendum ut tristique et egestas quis ipsum suspendisse ultrices. Pretium nibh ipsum consequat nisl vel pretium. Nunc id cursus metus aliquam eleifend mi in nulla. Commodo nulla facilisi nullam vehicula ipsum a arcu cursus.",
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Bibendum ut tristique et egestas quis ipsum suspendisse ultrices. Pretium nibh ipsum consequat nisl vel pretium. Nunc id cursus metus aliquam eleifend mi in nulla. Commodo nulla facilisi nullam vehicula ipsum a arcu cursus.",
-        R.drawable.onboarding1
+        "Lorem ipsum is simply dummy ",
+        " ${LoremIpsum(20).toString()}", R.drawable.onboarding1
     ), Page(
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Bibendum ut tristique et egestas quis ipsum suspendisse ultrices. Pretium nibh ipsum consequat nisl vel pretium. Nunc id cursus metus aliquam eleifend mi in nulla. Commodo nulla facilisi nullam vehicula ipsum a arcu cursus.",
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Bibendum ut tristique et egestas quis ipsum suspendisse ultrices. Pretium nibh ipsum consequat nisl vel pretium. Nunc id cursus metus aliquam eleifend mi in nulla. Commodo nulla facilisi nullam vehicula ipsum a arcu cursus.",
-        R.drawable.onboarding2
+        "Lorem ipsum is simply dummy ",
+        " ${LoremIpsum(20).toString()}", R.drawable.onboarding2
     ), Page(
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Bibendum ut tristique et egestas quis ipsum suspendisse ultrices. Pretium nibh ipsum consequat nisl vel pretium. Nunc id cursus metus aliquam eleifend mi in nulla. Commodo nulla facilisi nullam vehicula ipsum a arcu cursus.",
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Bibendum ut tristique et egestas quis ipsum suspendisse ultrices. Pretium nibh ipsum consequat nisl vel pretium. Nunc id cursus metus aliquam eleifend mi in nulla. Commodo nulla facilisi nullam vehicula ipsum a arcu cursus.",
-        R.drawable.onboarding3
+        "Lorem ipsum is simply dummy ",
+        " ${LoremIpsum(20).toString()}", R.drawable.onboarding3
     )
 )

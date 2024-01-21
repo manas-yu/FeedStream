@@ -1,7 +1,8 @@
-package com.loc.newsapp.Presentation.onboarding.components
+package com.loc.newsapp.presentation.onboarding.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -35,14 +36,15 @@ fun OnBoardingPage(
         Spacer(modifier = Modifier.height(Dimens.MediumPadding1))
         Text(
             text = page.title,
-            style = MaterialTheme.typography.displaySmall.copy(fontWeight = FontWeight.Bold),
+            style = MaterialTheme.typography.displayMedium.copy(fontWeight = FontWeight.Bold),
             color = colorResource(id = R.color.display_small)
         )
         Text(
-            text = page.title,
+            text = page.description,
             style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
             color = colorResource(id = R.color.text_medium)
         )
+
 
     }
 }
