@@ -1,4 +1,4 @@
-package com.loc.newsapp.data.remote.dto
+package com.loc.newsapp.domain.model
 
 data class Article(
     val author: String,

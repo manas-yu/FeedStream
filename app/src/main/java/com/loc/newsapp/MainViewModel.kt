@@ -1,12 +1,11 @@
-package com.loc.newsapp
+package com.loc.newsapp.presentation.mainActivity
 
-import androidx.compose.runtime.getValue
+import android.util.Log
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.loc.newsapp.domain.usecases.AppEntryUseCases
+import com.loc.newsapp.domain.usecases.app_entry.AppEntryUseCases
 import com.loc.newsapp.presentation.navgraph.Route
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -14,27 +13,30 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
-
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val appEntryUseCases: AppEntryUseCases
 ) : ViewModel() {
-    var splashCondition by mutableStateOf(true)
-        private set
-    var startDestination by mutableStateOf(Route.AppStartNavigation.route)
-        private set
+
+    private val _splashCondition = mutableStateOf(true)
+    val splashCondition: State<Boolean> = _splashCondition
+
+    private val _startDestination = mutableStateOf(Route.AppStartNavigation.route)
+    val startDestination: State<String> = _startDestination
 
     init {
-        appEntryUseCases.readAppEntry().onEach { fromHomeScreen ->
-            if (fromHomeScreen) {
-                startDestination = Route.NewsNavigation.route
+        appEntryUseCases.readAppEntry().onEach { shouldStartFromHomeScreen ->
+            if (shouldStartFromHomeScreen) {
+                _startDestination.value = Route.NewsNavigation.route
             } else {
-                startDestination = Route.AppStartNavigation.route
+                _startDestination.value = Route.AppStartNavigation.route
             }
-            delay(300)
-            splashCondition = false
-
+            delay(200) //Without this delay, the onBoarding screen will show for a momentum.
+            _splashCondition.value = false
         }.launchIn(viewModelScope)
     }
-
 }
+
+
+
+

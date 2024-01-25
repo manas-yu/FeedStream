@@ -1,4 +1,14 @@
 package com.loc.newsapp.domain.usecases.news
 
-class GetNews {
+import androidx.paging.PagingData
+import com.loc.newsapp.domain.model.Article
+import com.loc.newsapp.domain.repository.NewsRepository
+import kotlinx.coroutines.flow.Flow
+
+class GetNews(
+    private val newsRepository: NewsRepository
+) {
+    suspend operator fun invoke(source: List<String>): Flow<PagingData<Article>> {
+        return newsRepository.getNews(source)
+    }
 }
