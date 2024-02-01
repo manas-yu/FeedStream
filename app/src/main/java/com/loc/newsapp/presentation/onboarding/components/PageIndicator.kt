@@ -14,8 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.loc.newsapp.presentation.Dimens.IndicatorSize
 
-import com.loc.newsapp.Presentation.onboarding.Dimens.IndicatorSize
+
 import com.loc.newsapp.ui.theme.BlueGray
 
 @Composable

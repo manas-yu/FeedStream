@@ -5,8 +5,9 @@ import androidx.paging.PagingState
 import com.loc.newsapp.data.remote.dto.NewsApi
 import com.loc.newsapp.domain.model.Article
 
-class NewsPagingSource(
+class SearchNewsPagingSource(
     private val newsApi: NewsApi,
+    private val searchQuery: String,
     private val sources: String,
 ) : PagingSource<Int, Article>() {
     override fun getRefreshKey(state: PagingState<Int, Article>): Int? {
@@ -22,7 +23,11 @@ class NewsPagingSource(
         val nextPageNumber = params.key ?: 1
 
         return try {
-            val response = newsApi.getNews(nextPageNumber, sources)
+            val response = newsApi.searchNews(
+                page = nextPageNumber,
+                sources = sources,
+                searchQuery = searchQuery
+            )
             totalNewsCount += response.articles.size
             val articles = response.articles.distinctBy { it.title }
 
@@ -36,6 +41,5 @@ class NewsPagingSource(
             LoadResult.Error(e)
         }
     }
-
 
 }

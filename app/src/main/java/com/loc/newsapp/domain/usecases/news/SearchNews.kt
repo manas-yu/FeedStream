@@ -5,10 +5,10 @@ import com.loc.newsapp.domain.model.Article
 import com.loc.newsapp.domain.repository.NewsRepository
 import kotlinx.coroutines.flow.Flow
 
-class GetNews(
+class SearchNews(
     private val newsRepository: NewsRepository
 ) {
-    operator fun invoke(source: List<String>): Flow<PagingData<Article>> {
-        return newsRepository.getNews(source)
+    operator fun invoke(searchQuery: String, source: List<String>): Flow<PagingData<Article>> {
+        return newsRepository.searchNews(searchQuery, source)
     }
 }

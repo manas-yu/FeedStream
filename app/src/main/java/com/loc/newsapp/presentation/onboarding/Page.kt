@@ -1,4 +1,4 @@
-package com.loc.newsapp.Presentation.onboarding
+package com.loc.newsapp.presentation.onboarding
 
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
