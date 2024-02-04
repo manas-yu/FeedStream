@@ -17,6 +17,29 @@ import com.loc.newsapp.domain.model.Article
 
 @Composable
 fun ArticlesList(
+    articles: List<Article>,
+    onClick: (Article) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+
+
+    LazyColumn(
+        contentPadding = PaddingValues(MediumPadding1),
+        verticalArrangement = Arrangement.spacedBy(MediumPadding1),
+        modifier = modifier.fillMaxSize()
+    ) {
+        items(articles.size) { index ->
+            val article = articles[index]
+            ArticleCard(article = article, onClick = { onClick(article) })
+
+        }
+    }
+
+
+}
+
+@Composable
+fun ArticlesList(
     articles: LazyPagingItems<Article>,
     onClick: (Article) -> Unit,
     modifier: Modifier = Modifier,
