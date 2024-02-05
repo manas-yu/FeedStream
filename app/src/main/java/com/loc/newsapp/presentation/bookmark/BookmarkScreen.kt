@@ -13,12 +13,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import com.loc.newsapp.R
+import com.loc.newsapp.domain.model.Article
 import com.loc.newsapp.presentation.Dimens.MediumPadding1
 import com.loc.newsapp.presentation.common.ArticlesList
 import com.loc.newsapp.presentation.navgraph.Route
 
 @Composable
-fun BookmarkScreen(state: BookMarkState, navigate: (String) -> Unit) {
+fun BookmarkScreen(
+    state: BookMarkState,
+    navigateToDetails: (Article) -> Unit
+) {
     Column(
         Modifier
             .fillMaxSize()
@@ -34,7 +38,7 @@ fun BookmarkScreen(state: BookMarkState, navigate: (String) -> Unit) {
         )
         Spacer(modifier = Modifier.height(MediumPadding1))
         ArticlesList(articles = state.articles, onClick = {
-            navigate(Route.DetailScreen.route)
+            navigateToDetails(it)
         })
 
     }

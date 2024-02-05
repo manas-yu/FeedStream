@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.loc.newsapp.domain.model.Article
 import com.loc.newsapp.presentation.Dimens.MediumPadding1
 import com.loc.newsapp.presentation.common.ArticlesList
 import com.loc.newsapp.presentation.common.SearchBar
@@ -20,7 +21,7 @@ import com.loc.newsapp.presentation.navgraph.Route
 fun SearchScreen(
     state: SearchState,
     event: (SearchEvent) -> Unit,
-    navigate: (String) -> Unit
+    navigateToDetails: (Article) -> Unit
 ) {
     val focusManager = LocalContext.current.getSystemService(FocusManager::class.java)
     Column(
@@ -41,9 +42,9 @@ fun SearchScreen(
                 event(SearchEvent.searchNews)
             })
         Spacer(modifier = Modifier.height(MediumPadding1))
-        state.articles?.let {
+        state.articles?.let { it ->
             val articles = it.collectAsLazyPagingItems()
-            ArticlesList(articles = articles, onClick = { navigate(Route.DetailScreen.route) })
+            ArticlesList(articles = articles, onClick = { article -> navigateToDetails(article) })
         }
     }
 

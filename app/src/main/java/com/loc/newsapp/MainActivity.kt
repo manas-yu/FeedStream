@@ -18,13 +18,19 @@ import androidx.compose.ui.graphics.Color
 
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.lifecycleScope
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.loc.newsapp.data.local.NewsDao
+import com.loc.newsapp.domain.model.Article
+import com.loc.newsapp.domain.model.Source
 import com.loc.newsapp.presentation.mainActivity.MainViewModel
 
 import com.loc.newsapp.presentation.navgraph.NavGraph
 
 import com.loc.newsapp.ui.theme.NewsAppTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -33,17 +39,19 @@ class MainActivity : ComponentActivity() {
 
     private val viewModel by viewModels<MainViewModel>()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
+
         installSplashScreen().apply {
             setKeepOnScreenCondition(condition = { viewModel.splashCondition.value })
         }
         setContent {
             NewsAppTheme(dynamicColor = false) {
                 // set color of status bar and navigation bar
-                
+
                 val isSystemInDarkMode = isSystemInDarkTheme()
                 val systemController = rememberSystemUiController()
                 SideEffect {

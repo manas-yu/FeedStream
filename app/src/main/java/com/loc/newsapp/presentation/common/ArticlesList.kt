@@ -22,7 +22,9 @@ fun ArticlesList(
     modifier: Modifier = Modifier,
 ) {
 
-
+    if (articles.isEmpty()) {
+        EmptyScreen()
+    }
     LazyColumn(
         contentPadding = PaddingValues(MediumPadding1),
         verticalArrangement = Arrangement.spacedBy(MediumPadding1),
@@ -77,6 +79,11 @@ private fun handelPagingResult(articles: LazyPagingItems<Article>): Boolean {
         }
 
         error != null -> {
+            EmptyScreen(error = error)
+            false
+        }
+
+        articles.itemCount == 0 -> {
             EmptyScreen()
             false
         }

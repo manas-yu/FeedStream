@@ -23,7 +23,7 @@ import com.loc.newsapp.R
 @Composable
 fun DetailsTopBar(
     onBackClick: () -> Unit,
-    onBookMarkClick: () -> Unit,
+    onBookmarkClick: () -> Unit,
     onBrowsingClick: () -> Unit,
     onShareClick: () -> Unit
 ) {
@@ -43,7 +43,7 @@ fun DetailsTopBar(
                     contentDescription = null
                 )
             }
-            IconButton(onClick = { onBookMarkClick() }) {
+            IconButton(onClick = { onBookmarkClick() }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_bookmark),
                     contentDescription = null

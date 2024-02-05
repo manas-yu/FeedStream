@@ -2,11 +2,15 @@ package com.loc.newsapp.domain.usecases.news
 
 import com.loc.newsapp.data.local.NewsDao
 import com.loc.newsapp.domain.model.Article
+import com.loc.newsapp.domain.repository.NewsRepository
+import javax.inject.Inject
 
-class UpsertArticle(
+class UpsertArticle @Inject constructor(
     private val newsDao: NewsDao
 ) {
+
     suspend operator fun invoke(article: Article) {
-        newsDao.upsert(article)
+        newsDao.upsert(article = article)
     }
+
 }
