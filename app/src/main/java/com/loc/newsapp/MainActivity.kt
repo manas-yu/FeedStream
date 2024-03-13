@@ -1,7 +1,6 @@
 package com.loc.newsapp
 
 import android.os.Bundle
-import android.provider.CalendarContract.Colors
 
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -18,12 +17,8 @@ import androidx.compose.ui.graphics.Color
 
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
-import androidx.lifecycle.lifecycleScope
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.loc.newsapp.data.local.NewsDao
-import com.loc.newsapp.domain.model.Article
-import com.loc.newsapp.domain.model.Source
-import com.loc.newsapp.presentation.mainActivity.MainViewModel
+import com.loc.newsapp.MainViewModel
 
 import com.loc.newsapp.presentation.navgraph.NavGraph
 

@@ -1,6 +1,8 @@
 package com.loc.newsapp.presentation.navgraph
 
 sealed class Route(val route: String) {
+    object RssFeedScreen : Route("rss_feed_screen")
+    object LoginScreen : Route("login_screen")
     object OnBoardingScreen : Route("onboarding_screen")
     object HomeScreen : Route("home_screen")
     object SearchScreen : Route("search_screen")

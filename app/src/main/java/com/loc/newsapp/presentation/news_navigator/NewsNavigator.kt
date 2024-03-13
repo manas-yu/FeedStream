@@ -4,6 +4,8 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -14,6 +16,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
@@ -30,10 +34,12 @@ import com.loc.newsapp.presentation.details.DetailsScreen
 import com.loc.newsapp.presentation.details.DetailsViewModel
 import com.loc.newsapp.presentation.home.HomeScreen
 import com.loc.newsapp.presentation.home.HomeViewModel
+import com.loc.newsapp.presentation.login.LoginScreen
 import com.loc.newsapp.presentation.navgraph.Route
 
 import com.loc.newsapp.presentation.news_navigator.components.BottomNavigationItem
 import com.loc.newsapp.presentation.news_navigator.components.NewsBottomNavigation
+import com.loc.newsapp.presentation.rssfeed.RssFeedScreen
 import com.loc.newsapp.presentation.search.SearchScreen
 import com.loc.newsapp.presentation.search.SearchViewModel
 
@@ -59,40 +65,72 @@ fun NewsNavigator() {
         Route.HomeScreen.route -> 0
         Route.SearchScreen.route -> 1
         Route.BookmarkScreen.route -> 2
-        else -> 0
+        else -> 3
     }
-    Scaffold(modifier = Modifier.fillMaxSize(), bottomBar = {
-        if (isBottomBarVisible) {
-            NewsBottomNavigation(
-                items = bottomNavigationItems,
-                selected = selectedItem, onClick = { index ->
-                    when (index) {
-                        0 -> navigateToTab(
-                            navController = navController,
-                            route = Route.HomeScreen.route
-                        )
-
-                        1 -> navigateToTab(
-                            navController = navController,
-                            route = Route.SearchScreen.route
-                        )
-
-                        2 -> navigateToTab(
-                            navController = navController,
-                            route = Route.BookmarkScreen.route
-                        )
-                    }
+    Scaffold(modifier = Modifier.fillMaxSize(),
+        floatingActionButton = {
+            if (selectedItem == 0) {
+                FloatingActionButton(
+                    onClick = {
+                        navController.navigate(Route.RssFeedScreen.route)
+                    },
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                    // FAB content, such as an Icon
+                    Icon(
+                        painter = painterResource(id = R.drawable.rss_icon),
+                        contentDescription = "rss"
+                    )
                 }
-            )
-        }
-    }) { it ->
+            }
+        },
+        bottomBar = {
+            if (isBottomBarVisible) {
+                NewsBottomNavigation(
+                    items = bottomNavigationItems,
+                    selected = selectedItem, onClick = { index ->
+                        when (index) {
+                            0 -> navigateToTab(
+                                navController = navController,
+                                route = Route.HomeScreen.route
+                            )
+
+                            1 -> navigateToTab(
+                                navController = navController,
+                                route = Route.SearchScreen.route
+                            )
+
+                            2 -> navigateToTab(
+                                navController = navController,
+                                route = Route.BookmarkScreen.route
+                            )
+                        }
+                    }
+                )
+            }
+        }) { it ->
 
         val bottomPadding = it.calculateBottomPadding()
         NavHost(
             navController = navController,
-            startDestination = Route.HomeScreen.route,
+            //TODO: handel auto login
+            startDestination = Route.LoginScreen.route,
             modifier = Modifier.padding(bottom = bottomPadding)
         ) {
+            composable(route = Route.RssFeedScreen.route) {
+                RssFeedScreen(onBackClick = {
+                    navController.popBackStack()
+                
+                })
+            }
+            composable(route = Route.LoginScreen.route) {
+                //TODO: Add LoginScreen
+                LoginScreen() {
+                    //TODO: Add Authentication
+                    navController.popBackStack()
+                    navController.navigate(Route.HomeScreen.route)
+                }
+            }
             composable(route = Route.HomeScreen.route) {
                 val viewModel: HomeViewModel = hiltViewModel()
                 val articles = viewModel.news.collectAsLazyPagingItems()
@@ -100,6 +138,9 @@ fun NewsNavigator() {
                     navigateToTab(navController, Route.SearchScreen.route)
                 }, navigateToDetails = { article ->
                     navigateToDetails(navController, article)
+                }, onLogout = {
+                    navController.popBackStack()
+                    navController.navigate(Route.LoginScreen.route)
                 })
             }
             composable(route = Route.SearchScreen.route) {

@@ -1,4 +1,4 @@
-package com.loc.newsapp.presentation.mainActivity
+package com.loc.newsapp
 
 import android.util.Log
 import androidx.compose.runtime.State
