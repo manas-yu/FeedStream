@@ -42,7 +42,7 @@ fun RssTopBar(onBackClick: () -> Unit, onFollowClicked: () -> Unit) {
         },
         title = {
             Text(
-                text = "Bookmarks",
+                text = "RssFeeds",
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
                 color = colorResource(
                     id = R.color.text_title

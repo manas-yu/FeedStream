@@ -1,5 +1,6 @@
 package com.loc.newsapp.presentation.rssfeed.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,10 +18,11 @@ import androidx.compose.ui.unit.dp
 import com.loc.newsapp.presentation.common.NewsButton
 
 @Composable
-fun FeedCard(name: String, onUnfollowClick: () -> Unit) {
+fun FeedCard(name: String, onUnfollowClick: () -> Unit, onFeedClick: () -> Unit) {
     Card(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable { onFeedClick() },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.onSecondaryContainer,
 
@@ -39,9 +41,7 @@ fun FeedCard(name: String, onUnfollowClick: () -> Unit) {
                 modifier = Modifier.weight(1f),
                 color = Color.Black
             )
-            NewsButton(text = "Unfollow") {
-
-            }
+            NewsButton(text = "Unfollow", onClick = onUnfollowClick)
         }
     }
 }

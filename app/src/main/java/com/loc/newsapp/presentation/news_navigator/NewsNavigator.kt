@@ -58,6 +58,7 @@ fun NewsNavigator() {
     var selectedItem by rememberSaveable {
         mutableIntStateOf(0)
     }
+
     val isBottomBarVisible = remember(key1 = backStackState) {
         backStackState?.destination?.route == Route.HomeScreen.route || backStackState?.destination?.route == Route.SearchScreen.route || backStackState?.destination?.route == Route.BookmarkScreen.route
     }
@@ -118,10 +119,13 @@ fun NewsNavigator() {
             modifier = Modifier.padding(bottom = bottomPadding)
         ) {
             composable(route = Route.RssFeedScreen.route) {
-                RssFeedScreen(onBackClick = {
-                    navController.popBackStack()
-                
-                })
+                RssFeedScreen(
+                    onBackClick = { navController.popBackStack() },
+                    onFollowClicked = { /*TODO*/ },
+                    onUnfollowClick = {},
+                    onFeedClick = { /*TODO*/ }
+                )
+
             }
             composable(route = Route.LoginScreen.route) {
                 //TODO: Add LoginScreen

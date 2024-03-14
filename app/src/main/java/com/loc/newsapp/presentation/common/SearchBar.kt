@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -95,12 +96,68 @@ fun SearchBar(
             keyboardActions = KeyboardActions(
                 onSearch = {
                     onSearch()
-                  
+
                 }
             ),
             textStyle = MaterialTheme.typography.bodySmall,
             interactionSource = interactionSource
         )
+    }
+
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CustomTextField(
+    painter: Painter,
+    modifier: Modifier = Modifier,
+    placeholder: String,
+    onValueChange: (String) -> Unit,
+    value: String,
+
+    ) {
+
+
+    Box(
+        modifier = modifier
+    ) {
+        TextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .searchBarBorder(),
+            value = value,
+            onValueChange = onValueChange,
+
+            leadingIcon = {
+                Icon(
+                    painter = painter,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp),
+                    tint = colorResource(id = R.color.body)
+                )
+            },
+            placeholder = {
+                Text(
+                    text = placeholder,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = colorResource(id = R.color.placeholder)
+                )
+            },
+            shape = MaterialTheme.shapes.medium,
+            colors = TextFieldDefaults.textFieldColors(
+                containerColor = colorResource(id = R.color.input_background),
+                textColor = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                cursorColor = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                disabledIndicatorColor = Color.Transparent,
+                errorIndicatorColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            ),
+
+
+            textStyle = MaterialTheme.typography.bodySmall,
+
+            )
     }
 
 }

@@ -16,7 +16,7 @@ import com.loc.newsapp.presentation.common.EmptyScreen
 fun FeedsList(
     feeds: List<Feed>,
     onClick: (Feed) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier, onUnfollowClick: (Feed) -> Unit,
 ) {
     if (feeds.isEmpty()) {
         EmptyScreen()
@@ -28,9 +28,11 @@ fun FeedsList(
     ) {
         items(feeds.size) { index ->
             val feed = feeds[index]
-            FeedCard(name = feed.name) {
+            FeedCard(
+                name = feed.name,
+                onFeedClick = { onClick(feed) },
+                onUnfollowClick = { onUnfollowClick(feed) })
 
-            }
 
         }
     }
