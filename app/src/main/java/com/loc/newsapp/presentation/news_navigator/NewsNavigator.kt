@@ -1,6 +1,5 @@
 package com.loc.newsapp.presentation.news_navigator
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -15,7 +14,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -29,7 +27,6 @@ import com.loc.newsapp.R
 import com.loc.newsapp.domain.model.Article
 import com.loc.newsapp.presentation.bookmark.BookMarkViewModel
 import com.loc.newsapp.presentation.bookmark.BookmarkScreen
-import com.loc.newsapp.presentation.details.DetailsEvent
 import com.loc.newsapp.presentation.details.DetailsScreen
 import com.loc.newsapp.presentation.details.DetailsViewModel
 import com.loc.newsapp.presentation.home.HomeScreen

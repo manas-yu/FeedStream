@@ -10,17 +10,23 @@ import org.json.JSONObject
 class RssRepositoryImpl(
     private val rssApi: RssApi
 ) : RssRepository {
-    override suspend fun setUser(name: String): User? {
-        val jsonBody = JSONObject().apply {
-            put("name", name)
+    override suspend fun setUser(name: String): Result<User?> {
+        return try {
+            val jsonBody = JSONObject().apply {
+                put("name", name)
+            }
+            val requestBody = jsonBody.toString().toRequestBody("application/json".toMediaType())
+            Result.Success(rssApi.setUser(requestBody))
+        } catch (e: Exception) {
+            Result.Error(e.message ?: "Unknown error")
         }
-        val requestBody = jsonBody.toString().toRequestBody("application/json".toMediaType())
-
-        return rssApi.setUser(requestBody)
-
     }
 
-    override suspend fun getUser(api: String): User? {
-        return rssApi.getUser(api)
+    override suspend fun getUser(api: String): Result<User?> {
+        return try {
+            Result.Success(rssApi.getUser(api))
+        } catch (e: Exception) {
+            Result.Error(e.message ?: "Unknown error")
+        }
     }
 }

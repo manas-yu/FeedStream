@@ -1,5 +1,6 @@
 package com.loc.newsapp.presentation.login
 
+import android.content.Context
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,7 +25,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.loc.newsapp.R
 import com.loc.newsapp.presentation.Dimens.MediumPadding1
@@ -32,6 +32,7 @@ import com.loc.newsapp.presentation.Dimens.MediumPadding2
 import com.loc.newsapp.presentation.common.NewsButton
 import com.loc.newsapp.presentation.common.searchBarBorder
 import com.loc.newsapp.presentation.search.SearchEvent
+import kotlin.reflect.KFunction2
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
