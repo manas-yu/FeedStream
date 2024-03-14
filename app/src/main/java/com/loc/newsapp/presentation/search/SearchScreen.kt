@@ -15,7 +15,6 @@ import com.loc.newsapp.domain.model.Article
 import com.loc.newsapp.presentation.Dimens.MediumPadding1
 import com.loc.newsapp.presentation.common.ArticlesList
 import com.loc.newsapp.presentation.common.SearchBar
-import com.loc.newsapp.presentation.navgraph.Route
 
 @Composable
 fun SearchScreen(
@@ -39,7 +38,7 @@ fun SearchScreen(
             value = state.searchQuery,
             onSearch = {
                 focusManager?.clearFocus()
-                event(SearchEvent.searchNews)
+                event(SearchEvent.SearchNews)
             })
         Spacer(modifier = Modifier.height(MediumPadding1))
         state.articles?.let { it ->

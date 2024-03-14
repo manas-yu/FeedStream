@@ -1,6 +1,9 @@
 package com.loc.newsapp.domain.model
 
 data class User(
-    val id: Int,
-    val name: String
+    val apiKey: String,
+    val createdAt: String,
+    val id: String,
+    val name: String,
+    val updatedAt: String
 )

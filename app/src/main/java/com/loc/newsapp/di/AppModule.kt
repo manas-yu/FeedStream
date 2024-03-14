@@ -2,14 +2,17 @@ package com.loc.newsapp.di
 
 import android.app.Application
 import androidx.room.Room
-import com.loc.newsapp.data.NewsRepositoryImpl
+import com.loc.newsapp.data.repository.NewsRepositoryImpl
 import com.loc.newsapp.data.local.NewsDao
 import com.loc.newsapp.data.local.NewsDatabase
 import com.loc.newsapp.data.local.NewsTypeConvertor
 import com.loc.newsapp.data.manager.LocalUserManagerImpl
+import com.loc.newsapp.data.remote.RssApi
 import com.loc.newsapp.data.remote.dto.NewsApi
+import com.loc.newsapp.data.repository.RssRepositoryImpl
 import com.loc.newsapp.domain.manager.LocalUserManager
 import com.loc.newsapp.domain.repository.NewsRepository
+import com.loc.newsapp.domain.repository.RssRepository
 import com.loc.newsapp.domain.usecases.app_entry.AppEntryUseCases
 
 import com.loc.newsapp.domain.usecases.app_entry.ReadAppEntry
@@ -22,8 +25,12 @@ import com.loc.newsapp.domain.usecases.news.SearchNews
 
 import com.loc.newsapp.domain.usecases.news.SelectArticles
 import com.loc.newsapp.domain.usecases.news.UpsertArticle
+import com.loc.newsapp.domain.usecases.rss.GetUser
+import com.loc.newsapp.domain.usecases.rss.RssUseCases
+import com.loc.newsapp.domain.usecases.rss.SetUser
 import com.loc.newsapp.util.Constants.BASE_URL
 import com.loc.newsapp.util.Constants.NEWS_DATABASE_NAME
+import com.loc.newsapp.util.Constants.RSS_BASE_URL
 
 import dagger.Module
 import dagger.Provides
@@ -92,5 +99,23 @@ object AppModule {
     fun provideNewsDao(
         newsDatabase: NewsDatabase
     ): NewsDao = newsDatabase.newsDao
+
+    @Provides
+    @Singleton
+    fun provideRssApi(): RssApi {
+        return Retrofit.Builder().baseUrl(RSS_BASE_URL).addConverterFactory(
+            GsonConverterFactory.create()
+        ).build().create(RssApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRssRepository(rssApi: RssApi): RssRepository = RssRepositoryImpl(rssApi = rssApi)
+
+    @Provides
+    @Singleton
+    fun provideRssUseCases(rssRepository: RssRepository): RssUseCases {
+        return RssUseCases(setUser = SetUser(rssRepository), getUser = GetUser(rssRepository))
+    }
 
 }

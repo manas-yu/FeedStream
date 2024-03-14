@@ -13,25 +13,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.loc.newsapp.R
@@ -39,31 +31,30 @@ import com.loc.newsapp.presentation.Dimens.MediumPadding1
 import com.loc.newsapp.presentation.Dimens.MediumPadding2
 import com.loc.newsapp.presentation.common.NewsButton
 import com.loc.newsapp.presentation.common.searchBarBorder
+import com.loc.newsapp.presentation.search.SearchEvent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
-    modifier: Modifier = Modifier,
-    onLogin: () -> Unit
+    state: LoginState,
+    onLogin: () -> Unit, event: (LoginEvent) -> Unit,
 ) {
-    var username by remember {
-        mutableStateOf("")
-    }
+
 
     Column(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
             .padding(MediumPadding2), verticalArrangement = Arrangement.Center
     ) {
 
-        Box(modifier = modifier) {
+        Box(modifier = Modifier) {
             TextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .searchBarBorder(),
-                value = username,
+                value = state.inputName,
                 onValueChange = {
-                    username = it
+                    event(LoginEvent.UpdateName(it))
                 },
                 shape = MaterialTheme.shapes.medium,
                 colors = TextFieldDefaults.textFieldColors(
@@ -84,9 +75,7 @@ fun LoginScreen(
                     )
                 },
                 leadingIcon = {
-                    Column {
 
-                    }
                     Icon(
 
                         imageVector = Icons.Default.AccountCircle,
@@ -100,7 +89,9 @@ fun LoginScreen(
         }
         Spacer(modifier = Modifier.height(MediumPadding1))
         Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
-            NewsButton(text = "Login", onClick = onLogin)
+            NewsButton(text = "Login", onClick = {
+                event(LoginEvent.SetUser)
+            })
         }
 
 
@@ -108,8 +99,8 @@ fun LoginScreen(
 
 }
 
-@Preview(showBackground = true, uiMode = 1, showSystemUi = true)
-@Composable
-fun LoginScreenPreview() {
-    LoginScreen() {}
-}
+//@Preview(showBackground = true, uiMode = 1, showSystemUi = true)
+//@Composable
+//fun LoginScreenPreview() {
+//    LoginScreen() {}
+//}

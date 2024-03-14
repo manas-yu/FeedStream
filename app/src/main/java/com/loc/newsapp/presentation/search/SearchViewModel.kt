@@ -17,7 +17,7 @@ class SearchViewModel @Inject constructor(
     val state: State<SearchState> = _state
     fun onEvent(event: SearchEvent) {
         when (event) {
-            is SearchEvent.searchNews -> {
+            is SearchEvent.SearchNews -> {
                 searchNews()
             }
 

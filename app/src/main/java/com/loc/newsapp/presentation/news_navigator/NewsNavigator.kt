@@ -35,6 +35,7 @@ import com.loc.newsapp.presentation.details.DetailsViewModel
 import com.loc.newsapp.presentation.home.HomeScreen
 import com.loc.newsapp.presentation.home.HomeViewModel
 import com.loc.newsapp.presentation.login.LoginScreen
+import com.loc.newsapp.presentation.login.LoginViewModel
 import com.loc.newsapp.presentation.navgraph.Route
 
 import com.loc.newsapp.presentation.news_navigator.components.BottomNavigationItem
@@ -129,11 +130,13 @@ fun NewsNavigator() {
             }
             composable(route = Route.LoginScreen.route) {
                 //TODO: Add LoginScreen
-                LoginScreen() {
+                val viewModel: LoginViewModel = hiltViewModel()
+                val state = viewModel.state.value
+                LoginScreen(state = state, event = viewModel::onEvent, onLogin = {
                     //TODO: Add Authentication
                     navController.popBackStack()
                     navController.navigate(Route.HomeScreen.route)
-                }
+                })
             }
             composable(route = Route.HomeScreen.route) {
                 val viewModel: HomeViewModel = hiltViewModel()

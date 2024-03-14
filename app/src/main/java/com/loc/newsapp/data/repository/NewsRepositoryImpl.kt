@@ -1,4 +1,4 @@
-package com.loc.newsapp.data
+package com.loc.newsapp.data.repository
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig

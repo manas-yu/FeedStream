@@ -55,15 +55,15 @@ fun RssFeedScreen(
         RssTopBar(onBackClick = onBackClick, onFollowClicked = { isDialogue = true })
 
         Spacer(modifier = Modifier.height(Dimens.MediumPadding1))
-        FeedsList(
-            feeds = listOf(
-                Feed(name = "anime", url = "wwd"),
-                Feed(name = "asd", url = "sadasd")
-            ), onClick = {
-                onFeedClick(it)
-            }, onUnfollowClick = {
-                onUnfollowClick(it)
-            })
+//        FeedsList(
+//            feeds = listOf(
+//                Feed(name = "anime", url = "wwd"),
+//                Feed(name = "asd", url = "sadasd")
+//            ), onClick = {
+//                onFeedClick(it)
+//            }, onUnfollowClick = {
+//                onUnfollowClick(it)
+//            })
         if (isDialogue) {
             AlertDialog(onDismissRequest = { isDialogue = false },
                 text = {
