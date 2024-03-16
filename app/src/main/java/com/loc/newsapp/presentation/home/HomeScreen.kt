@@ -40,7 +40,8 @@ fun HomeScreen(
     articles: LazyPagingItems<Article>,
     navigateToSearch: () -> Unit,
     navigateToDetails: (Article) -> Unit,
-    onLogout: () -> Unit
+    onLogout: () -> Unit,
+    event: (HomeScreenEvent) -> Unit
 ) {
     val titles by remember {
         derivedStateOf {
@@ -68,7 +69,11 @@ fun HomeScreen(
                     .padding(horizontal = MediumPadding1)
             )
             Spacer(modifier = Modifier.weight(1f))
-            IconButton(onClick = onLogout) {
+            IconButton(onClick = {
+                onLogout()
+                event(HomeScreenEvent.Logout)
+
+            }) {
                 Icon(imageVector = Icons.Default.ExitToApp, contentDescription = null)
             }
         }

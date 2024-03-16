@@ -7,7 +7,7 @@ import com.loc.newsapp.domain.repository.RssRepository
 class GetUser(
     private val rssRepository: RssRepository
 ) {
-    suspend operator fun invoke(api: String): Result<User?> {
-        return rssRepository.getUser(api)
+    suspend operator fun invoke(name: String): Result<User?> {
+        return rssRepository.getUser(name)
     }
 }

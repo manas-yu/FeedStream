@@ -22,9 +22,10 @@ class RssRepositoryImpl(
         }
     }
 
-    override suspend fun getUser(api: String): Result<User?> {
+    override suspend fun getUser(name: String): Result<User?> {
         return try {
-            Result.Success(rssApi.getUser(api))
+
+            Result.Success(rssApi.getUser(name))
         } catch (e: Exception) {
             Result.Error(e.message ?: "Unknown error")
         }

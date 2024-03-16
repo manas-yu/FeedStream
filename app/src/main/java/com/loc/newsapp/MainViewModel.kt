@@ -1,6 +1,5 @@
 package com.loc.newsapp
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -23,15 +22,24 @@ class MainViewModel @Inject constructor(
 
     private val _startDestination = mutableStateOf(Route.AppStartNavigation.route)
     val startDestination: State<String> = _startDestination
+    private val _loginStatusDestination = mutableStateOf(Route.AppStartNavigation.route)
+    val loginStatusDestination: State<String> = _loginStatusDestination
 
     init {
+        appEntryUseCases.readUserApi().onEach { apiKey ->
+            if (apiKey.isEmpty()) {
+                _loginStatusDestination.value = Route.LoginScreen.route
+            } else {
+                _loginStatusDestination.value = Route.HomeScreen.route
+            }
+        }.launchIn(viewModelScope)
         appEntryUseCases.readAppEntry().onEach { shouldStartFromHomeScreen ->
             if (shouldStartFromHomeScreen) {
                 _startDestination.value = Route.NewsNavigation.route
             } else {
                 _startDestination.value = Route.AppStartNavigation.route
             }
-            delay(200) //Without this delay, the onBoarding screen will show for a momentum.
+            delay(500) //Without this delay, the onBoarding screen will show for a momentum.
             _splashCondition.value = false
         }.launchIn(viewModelScope)
     }

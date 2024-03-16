@@ -23,6 +23,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.loc.newsapp.MainViewModel
 import com.loc.newsapp.R
 import com.loc.newsapp.domain.model.Article
 import com.loc.newsapp.presentation.bookmark.BookMarkViewModel
@@ -108,12 +109,12 @@ fun NewsNavigator() {
                 )
             }
         }) { it ->
-
+        val mainViewModel: MainViewModel = hiltViewModel()
         val bottomPadding = it.calculateBottomPadding()
         NavHost(
             navController = navController,
             //TODO: handel auto login
-            startDestination = Route.LoginScreen.route,
+            startDestination = mainViewModel.loginStatusDestination.value,
             modifier = Modifier.padding(bottom = bottomPadding)
         ) {
             composable(route = Route.RssFeedScreen.route) {
@@ -129,23 +130,30 @@ fun NewsNavigator() {
                 //TODO: Add LoginScreen
                 val viewModel: LoginViewModel = hiltViewModel()
                 val state = viewModel.state.value
-                LoginScreen(state = state, event = viewModel::onEvent, onLogin = {
-                    //TODO: Add Authentication
-                    navController.popBackStack()
-                    navController.navigate(Route.HomeScreen.route)
-                })
+                LoginScreen(
+                    navigateToHomeState = viewModel.navigateToHomeState,
+                    state = state,
+                    event = viewModel::onEvent,
+                    sideEffect = viewModel.sideEffect, navigateToHome = {
+                        navController.popBackStack()
+                        navController.navigate(Route.HomeScreen.route)
+                    }
+                )
             }
             composable(route = Route.HomeScreen.route) {
                 val viewModel: HomeViewModel = hiltViewModel()
                 val articles = viewModel.news.collectAsLazyPagingItems()
-                HomeScreen(articles = articles, navigateToSearch = {
-                    navigateToTab(navController, Route.SearchScreen.route)
-                }, navigateToDetails = { article ->
-                    navigateToDetails(navController, article)
-                }, onLogout = {
-                    navController.popBackStack()
-                    navController.navigate(Route.LoginScreen.route)
-                })
+                HomeScreen(
+                    event = viewModel::onEvent,
+                    articles = articles, navigateToSearch = {
+                        navigateToTab(navController, Route.SearchScreen.route)
+                    }, navigateToDetails = { article ->
+                        navigateToDetails(navController, article)
+                    }, onLogout = {
+
+                        navController.popBackStack()
+                        navController.navigate(Route.LoginScreen.route)
+                    })
             }
             composable(route = Route.SearchScreen.route) {
                 val viewModel: SearchViewModel = hiltViewModel()

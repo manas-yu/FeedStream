@@ -16,7 +16,10 @@ import com.loc.newsapp.domain.repository.RssRepository
 import com.loc.newsapp.domain.usecases.app_entry.AppEntryUseCases
 
 import com.loc.newsapp.domain.usecases.app_entry.ReadAppEntry
+import com.loc.newsapp.domain.usecases.app_entry.ReadUserApi
+import com.loc.newsapp.domain.usecases.app_entry.RemoveUserApi
 import com.loc.newsapp.domain.usecases.app_entry.SaveAppEntry
+import com.loc.newsapp.domain.usecases.app_entry.SaveUserApi
 import com.loc.newsapp.domain.usecases.news.DeleteArticle
 import com.loc.newsapp.domain.usecases.news.GetNews
 import com.loc.newsapp.domain.usecases.news.GetSavedArticle
@@ -53,8 +56,10 @@ object AppModule {
     @Singleton
     fun provideAppEntryUseCases(localUserManager: LocalUserManager) = AppEntryUseCases(
         readAppEntry = ReadAppEntry(localUserManager),
-        saveAppEntry = SaveAppEntry(localUserManager)
-
+        saveAppEntry = SaveAppEntry(localUserManager),
+        saveUserApi = SaveUserApi(localUserManager),
+        removeUserApi = RemoveUserApi(localUserManager),
+        readUserApi = ReadUserApi(localUserManager)
     )
 
     @Provides

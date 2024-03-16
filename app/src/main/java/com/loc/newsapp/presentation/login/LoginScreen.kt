@@ -1,6 +1,6 @@
 package com.loc.newsapp.presentation.login
 
-import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 
@@ -22,26 +23,56 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import com.loc.newsapp.R
+import com.loc.newsapp.presentation.Dimens.ExtraSmallPadding2
 import com.loc.newsapp.presentation.Dimens.MediumPadding1
 import com.loc.newsapp.presentation.Dimens.MediumPadding2
 import com.loc.newsapp.presentation.common.NewsButton
 import com.loc.newsapp.presentation.common.searchBarBorder
-import com.loc.newsapp.presentation.search.SearchEvent
-import kotlin.reflect.KFunction2
+import com.loc.newsapp.util.UIComponent
 
-@OptIn(ExperimentalMaterial3Api::class)
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun LoginScreen(
     state: LoginState,
-    onLogin: () -> Unit, event: (LoginEvent) -> Unit,
+    navigateToHomeState: Boolean,
+    event: (LoginEvent) -> Unit,
+    sideEffect: UIComponent?,
+    navigateToHome: () -> Unit,
 ) {
 
 
+    LaunchedEffect(key1 = navigateToHomeState) {
+        when (navigateToHomeState) {
+            true -> navigateToHome()
+            false -> Unit
+        }
+    }
+    val context = LocalContext.current
+    LaunchedEffect(key1 = sideEffect) {
+        sideEffect?.let {
+            when (sideEffect) {
+                is UIComponent.Toast -> {
+                    Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
+                    event(LoginEvent.RemoveSideEffect)
+                }
+
+                else -> Unit
+            }
+        }
+    }
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val view = LocalView.current
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -91,7 +122,18 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(MediumPadding1))
         Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
             NewsButton(text = "Login", onClick = {
+                event(LoginEvent.GetUser)
+
+                view.clearFocus()
+                keyboardController?.hide()
+
+            })
+            Spacer(modifier = Modifier.width(ExtraSmallPadding2))
+            NewsButton(text = "Signup", onClick = {
                 event(LoginEvent.SetUser)
+
+                view.clearFocus()
+                keyboardController?.hide()
             })
         }
 

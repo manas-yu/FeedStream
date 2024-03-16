@@ -5,5 +5,5 @@ import com.loc.newsapp.domain.model.User
 
 interface RssRepository {
     suspend fun setUser(name: String): Result<User?>
-    suspend fun getUser(api: String): Result<User?>
+    suspend fun getUser(name: String): Result<User?>
 }
