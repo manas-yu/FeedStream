@@ -21,7 +21,7 @@ import com.loc.newsapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RssTopBar(onBackClick: () -> Unit, onFollowClicked: () -> Unit) {
+fun RssTopBar(onBackClick: () -> Unit, onFollowClicked: () -> Unit, showBottomSheet: () -> Unit) {
     TopAppBar(
         navigationIcon = {
             IconButton(onClick = { onBackClick() }) {
@@ -35,6 +35,12 @@ fun RssTopBar(onBackClick: () -> Unit, onFollowClicked: () -> Unit) {
             IconButton(onClick = { onFollowClicked() }) {
                 Icon(
                     imageVector = Icons.Default.Add,
+                    contentDescription = null
+                )
+            }
+            IconButton(onClick = { showBottomSheet() }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.rss_icon),
                     contentDescription = null
                 )
             }

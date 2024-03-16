@@ -19,6 +19,7 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TabRowDefaults.containerColor
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -89,14 +90,16 @@ fun LoginScreen(
                     event(LoginEvent.UpdateName(it))
                 },
                 shape = MaterialTheme.shapes.medium,
-                colors = TextFieldDefaults.textFieldColors(
-                    containerColor = colorResource(id = R.color.input_background),
-                    textColor = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                colors = TextFieldDefaults.colors(
+                    focusedTextColor = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                    focusedContainerColor = containerColor,
+                    unfocusedContainerColor = containerColor,
+                    disabledContainerColor = containerColor,
                     cursorColor = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
                     disabledIndicatorColor = Color.Transparent,
                     errorIndicatorColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent
                 ),
                 textStyle = MaterialTheme.typography.bodySmall,
                 placeholder = {
