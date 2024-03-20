@@ -1,5 +1,6 @@
 package com.loc.newsapp.presentation.rssfeed.components
 
+import android.provider.CalendarContract.Colors
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,19 +15,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.loc.newsapp.R
 import com.loc.newsapp.presentation.common.NewsButton
 
 @Composable
-fun FeedCard(name: String, onUnfollowClick: () -> Unit, onFeedClick: () -> Unit) {
+fun FeedCard(
+    name: String,
+    onUnfollowClick: () -> Unit,
+    isFollowed: Boolean,
+    onFollowClicked: () -> Unit
+) {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onFeedClick() },
+            .fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.onSecondaryContainer,
-
-            ),
+        ),
         elevation = CardDefaults.cardElevation(),
         shape = RoundedCornerShape(8.dp)
     ) {
@@ -37,11 +44,16 @@ fun FeedCard(name: String, onUnfollowClick: () -> Unit, onFeedClick: () -> Unit)
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
+                overflow = TextOverflow.Ellipsis,
                 text = name,
+                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.weight(1f),
                 color = Color.Black
             )
-            NewsButton(text = "Unfollow", onClick = onUnfollowClick)
+            NewsButton(
+                text = if (isFollowed) "Unfollow" else "Follow",
+                onClick = if (isFollowed) onUnfollowClick else onFollowClicked
+            )
         }
     }
 }

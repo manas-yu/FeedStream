@@ -84,3 +84,52 @@ fun DetailsTopBar(
 
     )
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DetailsTopBar(
+    onBackClick: () -> Unit,
+    onBrowsingClick: () -> Unit,
+    onShareClick: () -> Unit
+) {
+    var isBookMarked by remember {
+        mutableStateOf(false)
+    }
+    TopAppBar(
+        navigationIcon = {
+            IconButton(onClick = { onBackClick() }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_back_arrow),
+                    contentDescription = null
+                )
+            }
+        },
+        actions = {
+            IconButton(onClick = { onShareClick() }) {
+                Icon(
+                    imageVector = Icons.Default.Share,
+                    contentDescription = null
+                )
+            }
+
+            IconButton(onClick = { onBrowsingClick() }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_network),
+                    contentDescription = null
+                )
+            }
+        },
+        title = { /*TODO*/ },
+        modifier = Modifier.fillMaxWidth(),
+        colors = TopAppBarDefaults.mediumTopAppBarColors(
+            actionIconContentColor = colorResource(
+                id = R.color.body
+            ),
+            containerColor = Color.Transparent,
+            navigationIconContentColor = colorResource(
+                id = R.color.body
+            ),
+        )
+
+    )
+}

@@ -4,8 +4,11 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.loc.newsapp.domain.manager.UserDataManager
 import com.loc.newsapp.domain.usecases.app_entry.AppEntryUseCases
+import com.loc.newsapp.domain.usecases.rss.RssUseCases
 import com.loc.newsapp.presentation.navgraph.Route
+import com.loc.newsapp.presentation.rssfeed.RssViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
@@ -14,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val appEntryUseCases: AppEntryUseCases
+    private val appEntryUseCases: AppEntryUseCases,
+    private val rssUseCases: RssUseCases
 ) : ViewModel() {
 
     private val _splashCondition = mutableStateOf(true)
@@ -31,6 +35,8 @@ class MainViewModel @Inject constructor(
                 _loginStatusDestination.value = Route.LoginScreen.route
             } else {
                 _loginStatusDestination.value = Route.HomeScreen.route
+                UserDataManager.setApiKey((apiKey))
+                println(apiKey)
             }
         }.launchIn(viewModelScope)
         appEntryUseCases.readAppEntry().onEach { shouldStartFromHomeScreen ->

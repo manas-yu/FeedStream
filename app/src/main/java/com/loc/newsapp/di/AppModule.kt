@@ -2,6 +2,7 @@ package com.loc.newsapp.di
 
 import android.app.Application
 import androidx.room.Room
+import com.loc.newsapp.NewsApplication
 import com.loc.newsapp.data.repository.NewsRepositoryImpl
 import com.loc.newsapp.data.local.NewsDao
 import com.loc.newsapp.data.local.NewsDatabase
@@ -28,9 +29,15 @@ import com.loc.newsapp.domain.usecases.news.SearchNews
 
 import com.loc.newsapp.domain.usecases.news.SelectArticles
 import com.loc.newsapp.domain.usecases.news.UpsertArticle
+import com.loc.newsapp.domain.usecases.rss.AddFeed
+import com.loc.newsapp.domain.usecases.rss.FollowFeed
+import com.loc.newsapp.domain.usecases.rss.GetFeeds
+import com.loc.newsapp.domain.usecases.rss.GetFollowedFeeds
+import com.loc.newsapp.domain.usecases.rss.GetPosts
 import com.loc.newsapp.domain.usecases.rss.GetUser
 import com.loc.newsapp.domain.usecases.rss.RssUseCases
 import com.loc.newsapp.domain.usecases.rss.SetUser
+import com.loc.newsapp.domain.usecases.rss.UnfollowFeed
 import com.loc.newsapp.util.Constants.BASE_URL
 import com.loc.newsapp.util.Constants.NEWS_DATABASE_NAME
 import com.loc.newsapp.util.Constants.RSS_BASE_URL
@@ -77,6 +84,13 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun providesApplication(): NewsApplication {
+        return NewsApplication()
+    }
+
+    @Provides
+    @Singleton
+
     fun providesNewsRepository(newsApi: NewsApi, newsDao: NewsDao): NewsRepository {
         return NewsRepositoryImpl(newsApi = newsApi, newsDao)
     }
@@ -120,7 +134,15 @@ object AppModule {
     @Provides
     @Singleton
     fun provideRssUseCases(rssRepository: RssRepository): RssUseCases {
-        return RssUseCases(setUser = SetUser(rssRepository), getUser = GetUser(rssRepository))
+        return RssUseCases(
+            setUser = SetUser(rssRepository), getUser = GetUser(rssRepository),
+            getPosts = GetPosts(rssRepository),
+            addFeed = AddFeed(rssRepository),
+            unfollowFeed = UnfollowFeed(rssRepository),
+            getFeeds = GetFeeds(rssRepository),
+            getFollowedFeeds = GetFollowedFeeds(rssRepository),
+            followFeed = FollowFeed(rssRepository)
+        )
     }
 
 }

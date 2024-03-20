@@ -1,6 +1,7 @@
 package com.loc.newsapp
 
 import android.os.Bundle
+import android.os.StrictMode
 
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -46,7 +47,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             NewsAppTheme(dynamicColor = false) {
                 // set color of status bar and navigation bar
-
+                val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+                StrictMode.setThreadPolicy(policy)
                 val isSystemInDarkMode = isSystemInDarkTheme()
                 val systemController = rememberSystemUiController()
                 SideEffect {

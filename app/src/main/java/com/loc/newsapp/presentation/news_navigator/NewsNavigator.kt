@@ -26,6 +26,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.loc.newsapp.MainViewModel
 import com.loc.newsapp.R
 import com.loc.newsapp.domain.model.Article
+import com.loc.newsapp.domain.model.Post
 import com.loc.newsapp.presentation.bookmark.BookMarkViewModel
 import com.loc.newsapp.presentation.bookmark.BookmarkScreen
 import com.loc.newsapp.presentation.details.DetailsScreen
@@ -39,6 +40,7 @@ import com.loc.newsapp.presentation.navgraph.Route
 import com.loc.newsapp.presentation.news_navigator.components.BottomNavigationItem
 import com.loc.newsapp.presentation.news_navigator.components.NewsBottomNavigation
 import com.loc.newsapp.presentation.rssfeed.RssFeedScreen
+import com.loc.newsapp.presentation.rssfeed.RssViewModel
 import com.loc.newsapp.presentation.search.SearchScreen
 import com.loc.newsapp.presentation.search.SearchViewModel
 
@@ -118,11 +120,15 @@ fun NewsNavigator() {
             modifier = Modifier.padding(bottom = bottomPadding)
         ) {
             composable(route = Route.RssFeedScreen.route) {
+                val viewModel: RssViewModel = hiltViewModel()
+                val state = viewModel.state.value
                 RssFeedScreen(
-                    onBackClick = { navController.popBackStack() },
-                    onFollowClicked = { /*TODO*/ },
-                    onUnfollowClick = {},
-                    onFeedClick = { /*TODO*/ }
+                    state = state,
+                    onBackClick = { navController.navigateUp() },
+                    event = viewModel::onEvent,
+                    navigateToDetails = { post ->
+                        navigateToPostDetails(navController, post)
+                    }
                 )
 
             }
@@ -175,6 +181,19 @@ fun NewsNavigator() {
                     }
 
             }
+            composable(route = Route.PostDetailScreen.route) {
+
+                navController.previousBackStackEntry?.savedStateHandle?.get<Post?>("post")
+                    ?.let { post ->
+                        DetailsScreen(
+                            post = post,
+
+                            navigateUp = { navController.navigateUp() },
+
+                            )
+                    }
+
+            }
             composable(route = Route.BookmarkScreen.route) {
                 val viewModel: BookMarkViewModel = hiltViewModel()
                 val state = viewModel.state.value
@@ -202,4 +221,9 @@ private fun navigateToTab(navController: NavController, route: String) {
 private fun navigateToDetails(navController: NavController, article: Article) {
     navController.currentBackStackEntry?.savedStateHandle?.set("article", article)
     navController.navigate(Route.DetailScreen.route)
+}
+
+private fun navigateToPostDetails(navController: NavController, post: Post) {
+    navController.currentBackStackEntry?.savedStateHandle?.set("post", post)
+    navController.navigate(Route.PostDetailScreen.route)
 }

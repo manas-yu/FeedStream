@@ -31,8 +31,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.TextUnit
 import com.loc.newsapp.R
+import com.loc.newsapp.domain.model.Article
 import com.loc.newsapp.domain.model.Feed
+import com.loc.newsapp.domain.model.Post
 import com.loc.newsapp.presentation.Dimens
 import com.loc.newsapp.presentation.Dimens.ExtraSmallPadding2
 import com.loc.newsapp.presentation.Dimens.MediumPadding1
@@ -40,22 +43,23 @@ import com.loc.newsapp.presentation.common.CustomTextField
 import com.loc.newsapp.presentation.common.NewsButton
 import com.loc.newsapp.presentation.common.NewsTextButton
 import com.loc.newsapp.presentation.rssfeed.components.FeedsList
+import com.loc.newsapp.presentation.rssfeed.components.PostsList
 import com.loc.newsapp.presentation.rssfeed.components.RssTopBar
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RssFeedScreen(
+    state: RssState,
     onBackClick: () -> Unit,
-    onFollowClicked: () -> Unit,
-    onUnfollowClick: (Feed) -> Unit,
-    onFeedClick: (Feed) -> Unit
-) {
+    event: (RssEvent) -> Unit,
+    navigateToDetails: (Post) -> Unit,
+
+    ) {
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberBottomSheetScaffoldState()
     var isDialogue by remember { mutableStateOf(false) }
-    var feedName by remember { mutableStateOf("") }
-    var feedURL by remember { mutableStateOf("") }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -66,31 +70,16 @@ fun RssFeedScreen(
 
         BottomSheetScaffold(
             sheetContent = {
+
                 FeedsList(
                     modifier = Modifier
                         .fillMaxHeight(0.5f)
                         .padding(MediumPadding1),
-                    feeds = listOf(
-                        Feed(
-                            name = "anime",
-                            url = "wwd",
-                            created_at = "2021-09-09T00:00:00.000Z",
-                            updated_at = "2021-09-09T00:00:00.000Z",
-                            id = "1",
-                            user_id = "1"
-                        ),
-                        Feed(
-                            name = "asd",
-                            url = "sadasd",
-                            created_at = "2021-09-09T00:00:00.000Z",
-                            updated_at = "2021-09-09T00:00:00.000Z",
-                            id = "1",
-                            user_id = "1"
-                        )
-                    ), onClick = {
-                        onFeedClick(it)
-                    }, onUnfollowClick = {
-                        onUnfollowClick(it)
+                    feeds = state.feeds, followedFeeds = state.followedFeeds,
+                    onUnfollowClick = {
+                        event(RssEvent.UnFollowFeed(it))
+                    }, onFollowClicked = {
+                        event(RssEvent.FollowFeed(it))
                     })
             }, scaffoldState = scaffoldState
         ) {
@@ -104,32 +93,41 @@ fun RssFeedScreen(
                 })
 
             Spacer(modifier = Modifier.height(Dimens.MediumPadding1))
+            PostsList(posts = state.posts, onClick = {
+                navigateToDetails(it)
+            })
             if (isDialogue) {
-                AlertDialog(onDismissRequest = { isDialogue = false },
+                AlertDialog(
+                    onDismissRequest = { isDialogue = false },
                     text = {
                         Column {
                             CustomTextField(
                                 painter = painterResource(id = R.drawable.rss_icon),
                                 placeholder = "Feed Name",
                                 onValueChange = {
-                                    feedName = it
+                                    event(RssEvent.UpdateName(it))
                                 },
-                                value = feedName
+                                value = state.inputName
                             )
                             Spacer(modifier = Modifier.height(ExtraSmallPadding2))
                             CustomTextField(
                                 painter = painterResource(id = R.drawable.ic_network),
                                 placeholder = "Feed URL",
                                 onValueChange = {
-                                    feedURL = it
+                                    event(RssEvent.UpdateUrl(it))
                                 },
-                                value = feedURL
+                                value = state.inputUrl
                             )
                         }
                     },
                     confirmButton = {
                         NewsButton(text = "Follow") {
-                            onFollowClicked()
+                            event(
+                                RssEvent.AddFeed(
+                                    feedName = state.inputName,
+                                    feedUrl = state.inputUrl
+                                )
+                            )
                             isDialogue = false
                         }
                     }, dismissButton = {

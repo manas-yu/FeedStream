@@ -1,12 +1,16 @@
 package com.loc.newsapp.domain.model
 
-data class PostsItem(
-    val created_at: String,
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+data class Post(
+    val createdAt: String,
     val description: String,
-    val feed_id: String,
+    val feedId: String,
     val id: String,
-    val published_at: String,
+    val publishedAt: String,
     val title: String,
-    val updated_at: String,
+    val updatedAt: String,
     val url: String
-)
+) : Parcelable

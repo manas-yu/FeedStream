@@ -3,17 +3,15 @@ package com.loc.newsapp.presentation.login
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.loc.newsapp.domain.manager.UserDataManager
+import com.loc.newsapp.domain.model.User
 import com.loc.newsapp.domain.usecases.app_entry.AppEntryUseCases
 import com.loc.newsapp.domain.usecases.rss.RssUseCases
 import com.loc.newsapp.util.UIComponent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -48,7 +46,16 @@ class LoginViewModel @Inject constructor(
                     }
                     navigateToHomeState = true
                     println("user: ${user.data?.name}, ${user.data?.apiKey}, ${user.data?.id}, ${user.data?.createdAt}, ${user.data?.updatedAt}")
-                    appEntryUseCases.saveUserApi(user.data?.apiKey!!)
+                    UserDataManager.setUser(
+                        User(
+                            user.data?.apiKey!!,
+                            user.data.createdAt,
+                            user.data.id,
+                            user.data.name,
+                            user.data.updatedAt
+                        )
+                    )
+                    appEntryUseCases.saveUserApi(user.data.apiKey)
                     sideEffect = UIComponent.Toast("Welcome ${user.data.name}!!")
 
                 }
@@ -70,7 +77,16 @@ class LoginViewModel @Inject constructor(
                     }
                     navigateToHomeState = true
                     println("user: ${user.data?.name}, ${user.data?.apiKey}, ${user.data?.id}, ${user.data?.createdAt}, ${user.data?.updatedAt}")
-                    appEntryUseCases.saveUserApi(user.data?.apiKey!!)
+                    UserDataManager.setUser(
+                        User(
+                            user.data?.apiKey!!,
+                            user.data.createdAt,
+                            user.data.id,
+                            user.data.name,
+                            user.data.updatedAt
+                        )
+                    )
+                    appEntryUseCases.saveUserApi(user.data.apiKey)
                     sideEffect = UIComponent.Toast("Welcome ${user.data.name}!!")
 
                 }

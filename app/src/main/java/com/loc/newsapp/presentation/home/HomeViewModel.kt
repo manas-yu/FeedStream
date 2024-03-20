@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import com.loc.newsapp.domain.repository.NewsRepository
+import com.loc.newsapp.domain.manager.UserDataManager
 import com.loc.newsapp.domain.usecases.app_entry.AppEntryUseCases
 import com.loc.newsapp.domain.usecases.news.NewsUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,8 +28,11 @@ class HomeViewModel @Inject constructor(
             is HomeScreenEvent.Logout -> {
                 viewModelScope.launch {
                     appEntryUseCases.removeUserApi()
+                    UserDataManager.setUser(null)
                 }
             }
+
+            else -> {}
 
         }
     }
