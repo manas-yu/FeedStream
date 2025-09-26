@@ -7,7 +7,7 @@ FeedStream is a full-stack RSS feed aggregator that delivers real-time news usin
 ### Features
 
 - 🔄 Aggregates multiple RSS feeds into a unified daily news stream.
-- 🧠 Implements **MVVM clean architecture** for modular, maintainable, and testable code.
+- 🧠 Implements **MVI clean architecture** for modular, maintainable, and testable code.
 - ⚡ Integrates **Pager3** to efficiently handle paging and infinite scroll, improving loading speed by over 30%.
 - 🌐 Utilizes **Retrofit** for optimized API communication.
 - 💾 Uses **RoomDB** for offline access and local caching.
@@ -35,7 +35,7 @@ The backend is built in **Go (Golang)** and is available here:
 
 ### Android
 - Kotlin
-- MVVM + Clean Architecture
+- MVI + Clean Architecture
 - Dagger Hilt
 - RoomDB
 - Retrofit
